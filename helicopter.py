@@ -73,7 +73,8 @@ class Helicopter:
         str: A string that includes the helicopter ID, model, maximum altitude, current altitude, fuel capacity,
         and current fuel level.
         """
-        attrs = [f"{key.split(sep='_')[-1]}: {self.__dict__[key]}" for key in self.__dict__]
+        attrs_dict = self.__dict__
+        attrs = [f"{key.split(sep='_')[-1]}: {attrs_dict[key]}" for key in attrs_dict]
         return f"{self.__class__.__name__}({', '.join(attrs)})"
 
     @staticmethod
