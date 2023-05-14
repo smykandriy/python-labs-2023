@@ -73,16 +73,8 @@ class Helicopter:
         str: A string that includes the helicopter ID, model, maximum altitude, current altitude, fuel capacity,
         and current fuel level.
         """
-        attrs = {
-            "id": self.__id,
-            "model": self.__model,
-            "max_altitude": self.__max_altitude,
-            "current_altitude": self.__current_altitude,
-            "fuel_capacity": self.__fuel_capacity,
-            "current_fuel": self.__current_fuel,
-        }
-        docstring = [f"{key.capitalize()}: {attrs[key]}" for key in attrs]
-        return f"{self.__class__.__name__}({', '.join(docstring)})"
+        attrs = [f"{key.split(sep='_')[-1]}: {self.__dict__[key]}" for key in self.__dict__]
+        return f"{self.__class__.__name__}({', '.join(attrs)})"
 
     @staticmethod
     def get_instance():
