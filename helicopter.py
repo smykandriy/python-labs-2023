@@ -4,12 +4,12 @@ class Helicopter:
 
     Attributes:
         TAKE_OFF_ALTITUDE (int): The altitude gained by the helicopter during takeoff.
-        __id (int): The unique identifier of the helicopter.
-        __model (str): The model of the helicopter.
-        __current_altitude (int): The current altitude of the helicopter in meters.
-        __max_altitude (int): The maximum altitude the helicopter can reach in meters.
-        __fuel_capacity (float): The maximum amount of fuel the helicopter can hold in liters.
-        __current_fuel (float): The current amount of fuel in the helicopter's tank in liters.
+        id (int): The unique identifier of the helicopter.
+        model (str): The model of the helicopter.
+        current_altitude (int): The current altitude of the helicopter in meters.
+        max_altitude (int): The maximum altitude the helicopter can reach in meters.
+        fuel_capacity (float): The maximum amount of fuel the helicopter can hold in liters.
+        current_fuel (float): The current amount of fuel in the helicopter's tank in liters.
 
     Methods:
         take_off(self):
@@ -36,34 +36,34 @@ class Helicopter:
     """
 
     TAKE_OFF_ALTITUDE = 100
-    instance = None
+    __instance = None
 
     def __init__(
         self,
-        __id=102,
-        __model=None,
-        __current_altitude=None,
-        __max_altitude=None,
-        __fuel_capacity=None,
-        __current_fuel=None,
+        id=102,
+        model=None,
+        current_altitude=None,
+        max_altitude=None,
+        fuel_capacity=None,
+        current_fuel=None,
     ):
         """
         Initializes a Helicopter object.
 
         Args:
-            __id (int): The unique identifier of the helicopter.
-            __model (str): The model of the helicopter.
-            __current_altitude (int): The current altitude of the helicopter in meters.
-            __max_altitude (int): The maximum altitude the helicopter can reach in meters.
-            __fuel_capacity (float): The maximum amount of fuel the helicopter can hold in liters.
-            __current_fuel (float): The current amount of fuel in the helicopter's tank in liters.
+            id (int): The unique identifier of the helicopter.
+            model (str): The model of the helicopter.
+            current_altitude (int): The current altitude of the helicopter in meters.
+            max_altitude (int): The maximum altitude the helicopter can reach in meters.
+            fuel_capacity (float): The maximum amount of fuel the helicopter can hold in liters.
+            current_fuel (float): The current amount of fuel in the helicopter's tank in liters.
         """
-        self.__id = __id
-        self.__model = __model
-        self.__current_altitude = __current_altitude
-        self.__max_altitude = __max_altitude
-        self.__fuel_capacity = __fuel_capacity
-        self.__current_fuel = __current_fuel
+        self.id = id
+        self.model = model
+        self.current_altitude = current_altitude
+        self.max_altitude = max_altitude
+        self.fuel_capacity = fuel_capacity
+        self.current_fuel = current_fuel
 
     def __str__(self):
         """
@@ -77,59 +77,14 @@ class Helicopter:
         attrs = [f"{key.split(sep='_')[-1]}: {attrs_dict[key]}" for key in attrs_dict]
         return f"{self.__class__.__name__}({', '.join(attrs)})"
 
-    @staticmethod
-    def get_instance():
-        if Helicopter.instance is None:
-            Helicopter.instance = Helicopter()
-        return Helicopter.instance
+    def __eq__(self, other):
+        return self.__instance == other.__instance
 
-    @property
-    def id(self):
-        return self.__id
-
-    @id.setter
-    def id(self, value):
-        self.__id = value
-
-    @property
-    def model(self):
-        return self.__model
-
-    @model.setter
-    def model(self, value):
-        self.__model = value
-
-    @property
-    def current_altitude(self):
-        return self.__current_altitude
-
-    @current_altitude.setter
-    def current_altitude(self, value):
-        self.__current_altitude = value
-
-    @property
-    def max_altitude(self):
-        return self.__max_altitude
-
-    @max_altitude.setter
-    def max_altitude(self, value):
-        self.__max_altitude = value
-
-    @property
-    def fuel_capacity(self):
-        return self.__fuel_capacity
-
-    @fuel_capacity.setter
-    def fuel_capacity(self, value):
-        self.__fuel_capacity = value
-
-    @property
-    def current_fuel(self):
-        return self.__current_fuel
-
-    @current_fuel.setter
-    def current_fuel(self, value):
-        self.__current_fuel = value
+    @classmethod
+    def get_instance(cls):
+        if cls.__instance is None:
+            cls.__instance = cls()
+        return cls.__instance
 
     def value_error(self, value_name):
         raise ValueError(
@@ -143,10 +98,10 @@ class Helicopter:
         If the new altitude would exceed the maximum altitude of the helicopter,
         sets the current altitude to the maximum altitude.
         """
-        if self.__current_altitude + self.TAKE_OFF_ALTITUDE > self.__max_altitude:
-            self.__current_altitude = self.__max_altitude
+        if self.current_altitude + self.TAKE_OFF_ALTITUDE > self.max_altitude:
+            self.current_altitude = self.max_altitude
             return
-        self.__current_altitude += self.TAKE_OFF_ALTITUDE
+        self.current_altitude += self.TAKE_OFF_ALTITUDE
 
     def ascend(self, altitude):
         """
@@ -163,10 +118,10 @@ class Helicopter:
         """
         if altitude < 0:
             self.value_error("altitude")
-        if self.__current_altitude + altitude > self.__max_altitude:
-            self.__current_altitude = self.__max_altitude
+        if self.current_altitude + altitude > self.max_altitude:
+            self.current_altitude = self.max_altitude
             return
-        self.__current_altitude += altitude
+        self.current_altitude += altitude
 
     def descend(self, altitude):
         """
@@ -183,10 +138,10 @@ class Helicopter:
         """
         if altitude < 0:
             self.value_error("altitude")
-        if self.__current_altitude - altitude < 0:
-            self.__current_altitude = 0
+        if self.current_altitude - altitude < 0:
+            self.current_altitude = 0
             return
-        self.__current_altitude -= altitude
+        self.current_altitude -= altitude
 
     def refuel(self, fuel):
         """
@@ -203,7 +158,7 @@ class Helicopter:
         """
         if fuel < 0:
             self.value_error("fuel")
-        if self.__current_fuel + fuel > self.__fuel_capacity:
-            self.__current_fuel = self.__fuel_capacity
+        if self.current_fuel + fuel > self.fuel_capacity:
+            self.current_fuel = self.fuel_capacity
             return
-        self.__current_fuel += fuel
+        self.current_fuel += fuel
