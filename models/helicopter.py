@@ -67,15 +67,6 @@ class Helicopter(AerialVehicle):
 
     __doc__ += AerialVehicle.__doc__
 
-    def __str__(self):
-        base_str = super().__str__()
-        attrs_dict = self.__dict__
-        attrs = [f"{key.split(sep='_')[-1]}: {attrs_dict[key]}" for key in attrs_dict]
-        return f"{base_str}, {' '.join(attrs)}"
-
-    def __eq__(self, other):
-        return self.__instance == other.__instance
-
     @classmethod
     def get_instance(cls):
         if cls.__instance is None:
