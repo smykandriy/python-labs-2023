@@ -3,6 +3,7 @@ class AerialVehicleManager:
     Attributes:
         aircrafts (list): A list of aerial vehicles managed by the manager.
     """
+
     def __init__(self):
         self.aircrafts = []
 
