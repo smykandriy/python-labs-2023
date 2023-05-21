@@ -1,4 +1,7 @@
-class Helicopter:
+from models.aerial_vehicle import AerialVehicle
+
+
+class Helicopter(AerialVehicle):
     """
     A class representing a helicopter.
 
@@ -8,8 +11,9 @@ class Helicopter:
         model (str): The model of the helicopter.
         current_altitude (int): The current altitude of the helicopter in meters.
         max_altitude (int): The maximum altitude the helicopter can reach in meters.
-        fuel_capacity (float): The maximum amount of fuel the helicopter can hold in liters.
-        current_fuel (float): The current amount of fuel in the helicopter's tank in liters.
+        fuel_capacity (int): The maximum amount of fuel the helicopter can hold in liters.
+        fuel_per_hour (int): The rate at which the dirigible consumes fuel per hour in liters.
+        current_fuel (int): The current amount of fuel in the helicopter's tank in liters.
 
     Methods:
         take_off(self):
@@ -40,42 +44,34 @@ class Helicopter:
 
     def __init__(
         self,
+        weight=None,
+        take_of_weight=None,
+        manufacturer=None,
+        max_speed=None,
         id=102,
         model=None,
         current_altitude=None,
         max_altitude=None,
         fuel_capacity=None,
+        fuel_per_hour=None,
         current_fuel=None,
     ):
-        """
-        Initializes a Helicopter object.
-
-        Args:
-            id (int): The unique identifier of the helicopter.
-            model (str): The model of the helicopter.
-            current_altitude (int): The current altitude of the helicopter in meters.
-            max_altitude (int): The maximum altitude the helicopter can reach in meters.
-            fuel_capacity (float): The maximum amount of fuel the helicopter can hold in liters.
-            current_fuel (float): The current amount of fuel in the helicopter's tank in liters.
-        """
+        super().__init__(weight, take_of_weight, manufacturer, max_speed)
         self.id = id
         self.model = model
         self.current_altitude = current_altitude
         self.max_altitude = max_altitude
         self.fuel_capacity = fuel_capacity
+        self.fuel_per_hour = fuel_per_hour
         self.current_fuel = current_fuel
 
-    def __str__(self):
-        """
-        Returns a string representation of the helicopter.
+    __doc__ += AerialVehicle.__doc__
 
-        Returns:
-        str: A string that includes the helicopter ID, model, maximum altitude, current altitude, fuel capacity,
-        and current fuel level.
-        """
+    def __str__(self):
+        base_str = super().__str__()
         attrs_dict = self.__dict__
         attrs = [f"{key.split(sep='_')[-1]}: {attrs_dict[key]}" for key in attrs_dict]
-        return f"{self.__class__.__name__}({', '.join(attrs)})"
+        return f"{base_str}, {' '.join(attrs)}"
 
     def __eq__(self, other):
         return self.__instance == other.__instance
@@ -162,3 +158,7 @@ class Helicopter:
             self.current_fuel = self.fuel_capacity
             return
         self.current_fuel += fuel
+
+    def get_max_flying_distance(self) -> int:
+        flight_time = self.fuel_capacity / self.fuel_per_hour
+        return self.max_speed * flight_time
