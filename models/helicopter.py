@@ -1,4 +1,5 @@
 from models.aerial_vehicle import AerialVehicle
+from models.decorators import log_method_calls, validate_method_naming_convention
 
 
 class Helicopter(AerialVehicle):
@@ -44,6 +45,7 @@ class Helicopter(AerialVehicle):
 
     def __init__(
         self,
+        weapons: set,
         weight=None,
         take_of_weight=None,
         manufacturer=None,
@@ -56,7 +58,7 @@ class Helicopter(AerialVehicle):
         fuel_per_hour=None,
         current_fuel=None,
     ):
-        super().__init__(weight, take_of_weight, manufacturer, max_speed)
+        super().__init__(weapons, weight, take_of_weight, manufacturer, max_speed)
         self.id = id
         self.model = model
         self.current_altitude = current_altitude
@@ -78,7 +80,8 @@ class Helicopter(AerialVehicle):
             f"Invalid {value_name} value: {value_name} cannot be negative."
         )
 
-    def take_off(self):
+    @validate_method_naming_convention
+    def TakeOff(self):
         """
         Increases the current altitude of the helicopter by the TAKE_OFF_ALTITUDE attribute.
 
@@ -90,6 +93,7 @@ class Helicopter(AerialVehicle):
             return
         self.current_altitude += self.TAKE_OFF_ALTITUDE
 
+    @log_method_calls("method_calls.log")
     def ascend(self, altitude):
         """
         Increases the current altitude of the helicopter by the specified amount.
