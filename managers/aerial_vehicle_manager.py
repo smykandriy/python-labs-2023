@@ -7,6 +7,15 @@ class AerialVehicleManager:
     def __init__(self):
         self.aircrafts = []
 
+    def __len__(self):
+        return len(self.aircrafts)
+
+    def __getitem__(self, index):
+        return self.aircrafts[index]
+
+    def __iter__(self):
+        return iter(self.aircrafts)
+
     def add_aircraft(self, aircraft):
         """
         Add an aerial vehicle to the manager.
@@ -46,3 +55,23 @@ class AerialVehicleManager:
                 lambda aircraft: aircraft.manufacturer == manufacturer, self.aircrafts
             )
         )
+
+    def get_max_delivery_weight_list(self):
+        return [aircraft.get_max_delivery_weight() for aircraft in self.aircrafts]
+
+    def enumerate_list(self):
+        return list(enumerate(self.aircrafts))
+
+    def get_objects_max_delivery_weight(self):
+        delivery_weight_list = self.get_max_delivery_weight_list()
+        return list(zip(self.aircrafts, delivery_weight_list))
+
+    def can_take_of_weight(self, weight):
+        return {
+            "all": all(
+                aircraft.take_of_weight >= weight for aircraft in self.aircrafts
+            ),
+            "any": any(
+                aircraft.take_of_weight >= weight for aircraft in self.aircrafts
+            ),
+        }
