@@ -57,16 +57,43 @@ class AerialVehicleManager:
         )
 
     def get_max_delivery_weight_list(self):
+        """
+        Get a list of maximum delivery weights for all aircrafts.
+
+        Returns:
+            list: A list of maximum delivery weights.
+        """
         return [aircraft.get_max_delivery_weight() for aircraft in self.aircrafts]
 
     def enumerate_list(self):
+        """
+        Enumerate the list of aircrafts.
+
+        Returns:
+            list: A list of tuples containing the index and the corresponding aircraft.
+        """
         return list(enumerate(self.aircrafts))
 
     def get_objects_max_delivery_weight(self):
+        """
+        Get a list of tuples containing aircrafts and their corresponding maximum delivery weights.
+
+        Returns:
+            list: A list of tuples (aircraft, delivery_weight).
+        """
         delivery_weight_list = self.get_max_delivery_weight_list()
         return list(zip(self.aircrafts, delivery_weight_list))
 
     def can_take_of_weight(self, weight):
+        """
+        Check if all or any aircraft can take off with the given weight.
+
+        Args:
+            weight (float): The weight to check.
+
+        Returns:
+            dict: A dictionary containing "all" and "any" keys with boolean values indicating if all or any aircraft can take off with the given weight.
+        """
         return {
             "all": all(
                 aircraft.take_of_weight >= weight for aircraft in self.aircrafts

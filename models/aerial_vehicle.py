@@ -58,6 +58,16 @@ class AerialVehicle(ABC):
         return self.take_of_weight - self.weight
 
     def get_attributes_by_type(self, data_type):
+        """
+        Retrieve attributes from the object by the specified data type.
+
+        Args:
+            data_type (type): The data type to filter the attributes by.
+
+        Returns:
+            dict: A dictionary containing attribute names as keys and their corresponding values,
+                  for attributes whose values match the specified data type.
+        """
         return {
             key: value
             for key, value in self.__dict__.items()

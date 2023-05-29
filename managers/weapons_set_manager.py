@@ -2,6 +2,13 @@ from managers.aerial_vehicle_manager import AerialVehicleManager
 
 
 class WeaponsSetManager:
+    """
+    A manager class for working with sets of weapons from an AerialVehicleManager.
+
+    Args:
+        regular_manager (AerialVehicleManager): The regular manager containing aerial vehicles.
+    """
+
     def __init__(self, regular_manager: AerialVehicleManager):
         self.regular_manager = regular_manager
 
