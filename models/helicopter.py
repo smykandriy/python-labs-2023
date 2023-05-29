@@ -1,5 +1,5 @@
 from models.aerial_vehicle import AerialVehicle
-from models.decorators import log_method_calls, validate_method_naming_convention
+from decorators.decorators import log_method_calls, validate_method_naming_convention
 
 
 class Helicopter(AerialVehicle):

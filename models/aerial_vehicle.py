@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-from models.decorators import log_method_calls
-
 
 class AerialVehicle(ABC):
     """
