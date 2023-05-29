@@ -30,3 +30,4 @@ class WeaponsSetManager:
         for aircraft in self.regular_manager:
             for weapon in aircraft.weapons:
                 yield weapon
+        raise StopIteration

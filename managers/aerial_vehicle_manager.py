@@ -72,7 +72,7 @@ class AerialVehicleManager:
         Returns:
             list: A list of tuples containing the index and the corresponding aircraft.
         """
-        return list(enumerate(self.aircrafts))
+        return enumerate(self.aircrafts)
 
     def get_objects_max_delivery_weight(self):
         """
@@ -82,7 +82,7 @@ class AerialVehicleManager:
             list: A list of tuples (aircraft, delivery_weight).
         """
         delivery_weight_list = self.get_max_delivery_weight_list()
-        return list(zip(self.aircrafts, delivery_weight_list))
+        return zip(self.aircrafts, delivery_weight_list)
 
     def can_take_of_weight(self, weight):
         """
