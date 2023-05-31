@@ -13,6 +13,7 @@ class Dirigible(AerialVehicle):
 
     def __init__(
         self,
+        weapons: set,
         weight=None,
         take_of_weight=None,
         manufacturer=None,
@@ -20,7 +21,7 @@ class Dirigible(AerialVehicle):
         fuel_capacity=None,
         fuel_per_hour=None,
     ):
-        super().__init__(weight, take_of_weight, manufacturer, max_speed)
+        super().__init__(weapons, weight, take_of_weight, manufacturer, max_speed)
         self.fuel_capacity = fuel_capacity
         self.fuel_per_hour = fuel_per_hour
 

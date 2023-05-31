@@ -13,8 +13,14 @@ class AerialVehicle(ABC):
     """
 
     def __init__(
-        self, weight=None, take_of_weight=None, manufacturer=None, max_speed=None
+        self,
+        weapons: set,
+        weight=None,
+        take_of_weight=None,
+        manufacturer=None,
+        max_speed=None,
     ):
+        self.weapons = weapons
         self.weight = weight
         self.take_of_weight = take_of_weight
         self.manufacturer = manufacturer
@@ -24,6 +30,9 @@ class AerialVehicle(ABC):
         attrs_dict = self.__dict__
         attrs = [f"{key}: {attrs_dict[key]}" for key in attrs_dict]
         return f"{self.__class__.__name__}({', '.join(attrs)})"
+
+    def __iter__(self):
+        return iter(self.weapons)
 
     def __str__(self):
         return f"{self.__class__.__name__}: {self.manufacturer}, {self.weight}"
@@ -45,3 +54,20 @@ class AerialVehicle(ABC):
             int: The maximum delivery weight of the aerial vehicle in kilograms.
         """
         return self.take_of_weight - self.weight
+
+    def get_attributes_by_type(self, data_type):
+        """
+        Retrieve attributes from the object by the specified data type.
+
+        Args:
+            data_type (type): The data type to filter the attributes by.
+
+        Returns:
+            dict: A dictionary containing attribute names as keys and their corresponding values,
+                  for attributes whose values match the specified data type.
+        """
+        return {
+            key: value
+            for key, value in self.__dict__.items()
+            if isinstance(value, data_type)
+        }
