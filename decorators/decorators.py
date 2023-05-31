@@ -1,5 +1,8 @@
+import logging
 import os
 from datetime import datetime
+
+from exceptions.exceptions import InvalidLoggerMode
 
 
 def validate_method_naming_convention(func):
@@ -44,7 +47,7 @@ def log_method_calls(filename):
 
     def decorator(func):
         def wrapper(*args, **kwargs):
-            directory = "methods_logs/"
+            directory = "logs/"
             os.makedirs(directory, exist_ok=True)
             file_path = os.path.join(directory, filename)
             with open(file_path, "a") as file:
@@ -52,6 +55,45 @@ def log_method_calls(filename):
                 log_message = f"Method '{func.__name__}' called at {timestamp}\n"
                 file.write(log_message)
             return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def logged(exception, mode):
+    """
+    Decorator that logs exceptions using the logging module.
+
+    The decorator logs the exceptions raised in the decorated method using the
+    specified mode: "console" or "file". In "console" mode, the exceptions are logged
+    to the console. In "file" mode, the exceptions are logged to a file.
+
+    Args:
+        exception (Exception): The exception class to be logged.
+        mode (str): The mode of logging: "console" or "file".
+
+    Returns:
+        callable: The decorator.
+
+    Raises:
+        ValueError: If an invalid mode is specified.
+    """
+
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except exception as e:
+                if mode.lower() == "console":
+                    raise e
+                elif mode.lower() == "file":
+                    log_file = "logs/exceptions.log"
+                    os.makedirs(os.path.dirname(log_file), exist_ok=True)
+                    logging.basicConfig(filename=log_file, level=logging.ERROR)
+                    logging.exception(e)
+                else:
+                    raise InvalidLoggerMode
 
         return wrapper
 
