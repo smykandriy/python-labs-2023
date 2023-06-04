@@ -74,8 +74,8 @@ class Helicopter(AerialVehicle):
 
     __doc__ += AerialVehicle.__doc__
 
-    # @validate_method_naming_convention
-    def TakeOff(self):
+    @validate_method_naming_convention
+    def take_off(self):
         """
         Increases the current altitude of the helicopter by the TAKE_OFF_ALTITUDE attribute.
 
