@@ -1,6 +1,8 @@
 import logging
 import os
 from datetime import datetime
+from functools import wraps
+from typing import Type
 
 from exceptions.exceptions import InvalidLoggerMode
 
@@ -22,13 +24,14 @@ def validate_method_naming_convention(func):
         ValueError: If the method name does not follow the snake_case convention.
     """
 
-    def wrapper(*args, **kwargs):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
         method_name = func.__name__
         if not method_name.islower() or "_" not in method_name:
             raise ValueError("Method name should follow snake_case convention")
-        return func(*args, **kwargs)
+        return func(self, *args, **kwargs)
 
-    return wrapper()
+    return wrapper
 
 
 def log_method_calls(filename):
@@ -61,7 +64,7 @@ def log_method_calls(filename):
     return decorator
 
 
-def logged(exception, mode):
+def logged(exception: Type[Exception], mode):
     """
     Decorator that logs exceptions using the logging module.
 
