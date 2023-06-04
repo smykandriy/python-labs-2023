@@ -10,12 +10,18 @@ class NegativeAttributeValue(ValueError):
     """
 
     def __init__(self, value_name):
-        self.value_name = value_name
-
-    def __str__(self):
-        return f"Invalid {self.value_name} value: {self.value_name} cannot be negative."
+        super().__init__(
+            f"Invalid {value_name} value: {value_name} cannot be negative."
+        )
 
 
 class InvalidLoggerMode(ValueError):
-    def __str__(self):
-        return "Invalid logging mode. Must be 'console' or 'file'."
+    """
+    Exception class for representing an invalid logger mode.
+
+    This exception is raised when an invalid logger mode is specified.
+    The logger mode must be either 'console' or 'file'.
+    """
+
+    def __init__(self):
+        super().__init__("Invalid logging mode. Must be 'console' or 'file'.")
