@@ -1,5 +1,10 @@
+from exceptions.exceptions import NegativeAttributeValue
 from models.aerial_vehicle import AerialVehicle
-from decorators.decorators import log_method_calls, validate_method_naming_convention
+from decorators.decorators import (
+    log_method_calls,
+    validate_method_naming_convention,
+    logged,
+)
 
 
 class Helicopter(AerialVehicle):
@@ -69,19 +74,8 @@ class Helicopter(AerialVehicle):
 
     __doc__ += AerialVehicle.__doc__
 
-    @classmethod
-    def get_instance(cls):
-        if cls.__instance is None:
-            cls.__instance = cls()
-        return cls.__instance
-
-    def value_error(self, value_name):
-        raise ValueError(
-            f"Invalid {value_name} value: {value_name} cannot be negative."
-        )
-
     @validate_method_naming_convention
-    def TakeOff(self):
+    def take_off(self):
         """
         Increases the current altitude of the helicopter by the TAKE_OFF_ALTITUDE attribute.
 
@@ -94,6 +88,7 @@ class Helicopter(AerialVehicle):
         self.current_altitude += self.TAKE_OFF_ALTITUDE
 
     @log_method_calls("method_calls.log")
+    @logged(NegativeAttributeValue, "file")
     def ascend(self, altitude):
         """
         Increases the current altitude of the helicopter by the specified amount.
@@ -102,13 +97,13 @@ class Helicopter(AerialVehicle):
             altitude (int): The amount to increase the altitude in meters.
 
         Raises:
-            ValueError: If the altitude argument is negative.
+            NegativeAttributeValue: If the altitude is less than zero.
 
         If the new altitude would exceed the maximum altitude of the helicopter,
         sets the current altitude to the maximum altitude.
         """
         if altitude < 0:
-            self.value_error("altitude")
+            raise NegativeAttributeValue("altitude")
         if self.current_altitude + altitude > self.max_altitude:
             self.current_altitude = self.max_altitude
             return
@@ -122,18 +117,19 @@ class Helicopter(AerialVehicle):
             altitude (int or float): The amount by which to descend the helicopter.
 
         Raises:
-            ValueError: If the altitude is less than zero.
+            NegativeAttributeValue: If the altitude is less than zero.
 
         Returns:
             None
         """
         if altitude < 0:
-            self.value_error("altitude")
+            raise NegativeAttributeValue("altitude")
         if self.current_altitude - altitude < 0:
             self.current_altitude = 0
             return
         self.current_altitude -= altitude
 
+    @logged(NegativeAttributeValue, "console")
     def refuel(self, fuel):
         """
         Refuels the helicopter by a specified amount of fuel.
@@ -142,13 +138,13 @@ class Helicopter(AerialVehicle):
             fuel (int or float): The amount of fuel to add to the helicopter.
 
         Raises:
-            ValueError: If the fuel is less than zero.
+            NegativeAttributeValue: If the fuel is less than zero.
 
         Returns:
             None
         """
         if fuel < 0:
-            self.value_error("fuel")
+            raise NegativeAttributeValue("fuel")
         if self.current_fuel + fuel > self.fuel_capacity:
             self.current_fuel = self.fuel_capacity
             return
